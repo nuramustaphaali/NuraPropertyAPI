@@ -59,7 +59,6 @@ source venv/bin/activate
 ```bash
 pip install -r requirements.txt
 ```
-*(Note: If you haven't frozen requirements yet, install dependencies manually: `pip install django djangorestframework djoser djangorestframework-simplejwt django-cors-headers django-filter drf-spectacular pillow`)*
 
 ### 4. Database Setup
 ```bash
@@ -112,3 +111,5 @@ NuraPropertyAPI/
 
 **Maintainer:** Nura Mustapha Ali
 **GitHub:** [nuramustaphaali](https://github.com/nuramustaphaali)
+**WhatsApp:** [+2349164601810](https://wa.me/2349164601810)
+**Email:** [nuramustali@gmail.com](mailto:nuramustali@gmail.com)
