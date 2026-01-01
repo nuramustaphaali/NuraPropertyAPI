@@ -110,6 +110,6 @@ NuraPropertyAPI/
 ## 🤝 Contact
 
 **Maintainer:** Nura Mustapha Ali
-**GitHub:** [nuramustaphaali](https://github.com/nuramustaphaali)
-**WhatsApp:** [+2349164601810](https://wa.me/2349164601810)
-**Email:** [nuramustali@gmail.com](mailto:nuramustali@gmail.com)
+* **GitHub:** [nuramustaphaali](https://github.com/nuramustaphaali)
+* **WhatsApp:** [+2349164601810](https://wa.me/2349164601810)
+* **Email:** [nuramustali@gmail.com](mailto:nuramustali@gmail.com)
