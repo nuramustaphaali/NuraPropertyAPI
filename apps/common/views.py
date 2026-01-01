@@ -261,7 +261,73 @@ class HomeAPIView(APIView):
                         "action": "View Admin Announcements",
                         "headers": {"Authorization": "Bearer <access_token>"}
                     }
-                ]
+                ],
+
+                "Finance & Transactions": [
+                    {
+                        "method": "POST",
+                        "url": "/api/v1/finance/report/",
+                        "action": "Report Offline Payment",
+                        "headers": {"Authorization": "Bearer <access_token>"},
+                        "body": {
+                            "property": "<property_uuid> (Optional)",
+                            "amount": 50000.00,
+                            "payment_method": "BANK_TRANSFER",
+                            "description": "Booking Fee for Flat 4",
+                            "note": "Sent from GTBank"
+                        },
+                        "note": "Generates a TX-ID. Status starts as PENDING."
+                    },
+                    {
+                        "method": "GET",
+                        "url": "/api/v1/finance/history/",
+                        "action": "View My Payment History",
+                        "headers": {"Authorization": "Bearer <access_token>"}
+                    },
+                    {
+                        "method": "PATCH",
+                        "url": "/api/v1/finance/verify/<TX-ID>/",
+                        "action": "Verify Payment (Agent Only)",
+                        "headers": {"Authorization": "Bearer <access_token>"},
+                        "body": {
+                            "action": "VERIFY",
+                            "note": "Funds received."
+                        },
+                        "note": "Use 'REJECT' to fail the transaction."
+                    }
+                ],
+                "Deals & Commissions": [
+                    {
+                        "method": "POST",
+                        "url": "/api/v1/finance/deals/create/",
+                        "action": "Close a Deal (Agent Only)",
+                        "headers": {"Authorization": "Bearer <access_token>"},
+                        "body": {
+                            "property": "<property_uuid>",
+                            "client_email": "buyer@example.com",
+                            "final_price": 85000000.00,
+                            "commission_percentage": 5.0,
+                            "deal_description": "Closed after inspection."
+                        },
+                        "note": "Automatically calculates commission and unpublishes the property from search."
+                    }
+                ],
+                "Analytics": [
+                    {
+                        "method": "GET",
+                        "url": "/api/v1/finance/analytics/admin-kpi/",
+                        "action": "Platform KPIs (Admin Only)",
+                        "headers": {"Authorization": "Bearer <access_token>"},
+                        "note": "Total Revenue, Total Users, Total Deals"
+                    },
+                    {
+                        "method": "GET",
+                        "url": "/api/v1/finance/analytics/my-performance/",
+                        "action": "Agent Performance Stats",
+                        "headers": {"Authorization": "Bearer <access_token>"},
+                        "note": "My Views, My Commissions"
+                    }
+                ],
             },
             "official_docs": {
                 "swagger": "/api/docs/",

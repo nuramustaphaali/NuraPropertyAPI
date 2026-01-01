@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'apps.users', # Add this
     'apps.common',
     'apps.profiles',
+    'apps.finance',
     'apps.properties',
     'apps.interactions',
 ]
