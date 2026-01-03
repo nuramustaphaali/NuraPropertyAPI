@@ -159,7 +159,7 @@ DJOSER = {
     'SERIALIZERS': {
         'user_create': 'apps.users.serializers.CreateUserSerializer',
         'user': 'apps.users.serializers.CreateUserSerializer',
-        'current_user': 'apps.users.serializers.CreateUserSerializer',
+        'current_user': 'apps.users.serializers.CustomUserSerializer', #'current_user': 'apps.users.serializers.CreateUserSerializer',
         'user_delete': 'djoser.serializers.UserDeleteSerializer',
     },
     # Toggle these via .env
@@ -189,6 +189,19 @@ SPECTACULAR_SETTINGS = {
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
     'COMPONENT_SPLIT_REQUEST': True,
+
+    'POSTPROCESSING_HOOKS': ['config.schema.djoser_tag_fix'],
+
+
+    'TAGS': [
+        {'name': 'Authentication', 'description': 'User Registration, Login, and Password Management'},
+        {'name': 'Profiles', 'description': 'Agent and User Profile Management'},
+        {'name': 'Properties', 'description': 'Real Estate Listings, Searching, and Filtering'},
+        {'name': 'Media', 'description': 'Property Image Gallery Uploads'},
+        {'name': 'Interactions', 'description': 'Inspections, Messaging, and Announcements'},
+        {'name': 'Finance', 'description': 'Ledger, Offline Payments, and Deal Closures'},
+        {'name': 'Analytics', 'description': 'Admin KPIs and Performance Stats'},
+    ],
     
     # --- Developer Contact ---
     'CONTACT': {
@@ -236,7 +249,14 @@ SITE_NAME = 'NuraPropertyAPI'
 
 # --- CORS ---
 # Allow all for dev, restrict for prod
-CORS_ALLOW_ALL_ORIGINS = DEBUG 
+CORS_ALLOW_ALL_ORIGINS = True #DEBUG 
+
+# Add your frontend domain here so Django lets it in
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",  
+    "http://10.125.152.73:8000",           # For testing on your laptop
+    "https://www.nurapropertyapi.com",   # Your real website
+]
 
 # --- LOGGING ---
 LOGGING = {

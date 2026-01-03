@@ -6,7 +6,10 @@ from django.shortcuts import get_object_or_404
 from .models import PropertyInspection
 from .serializers import InspectionSerializer
 from apps.properties.models import Property
+from drf_spectacular.utils import extend_schema
 
+
+@extend_schema(tags=['Interactions'])
 class ScheduleInspectionView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
@@ -38,6 +41,7 @@ class ScheduleInspectionView(APIView):
         serializer = InspectionSerializer(inspection)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
+@extend_schema(tags=['Interactions'])
 class MyInspectionsListView(generics.ListAPIView):
     """
     Returns inspections where the user is EITHER the client OR the agent.
@@ -52,6 +56,7 @@ class MyInspectionsListView(generics.ListAPIView):
 
 from django.db import models # Need to import Q for the query above to work
 
+@extend_schema(tags=['Interactions'])
 class ManageInspectionView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
@@ -77,6 +82,7 @@ from .serializers import MessageSerializer, AnnouncementSerializer
 
 # --- Messaging Views ---
 
+@extend_schema(tags=['Interactions'])
 class SendMessageView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
@@ -88,7 +94,7 @@ class SendMessageView(APIView):
             serializer.save(sender=request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
+@extend_schema(tags=['Interactions'])
 class InboxListView(generics.ListAPIView):
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = MessageSerializer
@@ -97,6 +103,7 @@ class InboxListView(generics.ListAPIView):
         # Return messages where I am the recipient
         return Message.objects.filter(recipient=self.request.user)
 
+@extend_schema(tags=['Interactions'])
 class MarkMessageReadView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
@@ -111,6 +118,7 @@ class MarkMessageReadView(APIView):
 
 # --- Announcement Views ---
 
+@extend_schema(tags=['Interactions'])
 class AnnouncementListView(generics.ListCreateAPIView):
     queryset = Announcement.objects.filter(is_active=True)
     serializer_class = AnnouncementSerializer

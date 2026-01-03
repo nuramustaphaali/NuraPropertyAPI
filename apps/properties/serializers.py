@@ -1,36 +1,52 @@
 # apps/properties/serializers.py
 from rest_framework import serializers
-from .models import Property
+from .models import Property, PropertyImage, PropertySearch
 from apps.profiles.serializers import ProfileSerializer
-
-
-
-# apps/properties/serializers.py
-from .models import Property, PropertyImage # Import PropertyImage
 
 class PropertyImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = PropertyImage
         fields = ["id", "property", "image"]
 
-
-
 class PropertySerializer(serializers.ModelSerializer):
     profile = serializers.SerializerMethodField()
     final_property_price = serializers.SerializerMethodField()
-    images = PropertyImageSerializer(many=True, read_only=True) # <--- ADD THIS LINE
-
+    images = PropertyImageSerializer(many=True, read_only=True)
+    user_name = serializers.ReadOnlyField(source='user.full_name') # Handy for frontend
+    
     class Meta:
         model = Property
         fields = [
-            "id", "user", "profile", "title", "slug", "ref_code",
-            "description", "country", "city", "postal_code",
-            "street_address", "property_number", "price", "tax",
-            "final_property_price", "plot_area", "total_floors",
-            "bedrooms", "bathrooms", "advert_type", "property_type",
-            "cover_photo", "published_status", "views", 
-            "images" # <--- ADD THIS TO FIELDS
+            'id', 
+            'user', 
+            'user_name',
+            'profile',  # <--- Added this so get_profile works
+            'title', 
+            'slug', 
+            'ref_code', 
+            'description',
+            'country', 
+            'city', 
+            'postal_code', 
+            'street_address', 
+            'property_number',
+            'price', 
+            'final_property_price', # <--- Added this
+            'tax', 
+            'plot_area', 
+            'total_floors', 
+            'bedrooms', 
+            'bathrooms',
+            'advert_type', 
+            'property_type', 
+            'cover_photo', 
+            'published_status', 
+            'views', 
+            'images', 
+            'created_at', 
+            'updated_at'
         ]
+        read_only_fields = ['user', 'slug', 'ref_code', 'views']
 
     def get_profile(self, obj):
         # Returns the Agent's profile info who posted this property
@@ -43,10 +59,8 @@ class PropertyCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Property
         exclude = ["updated_at", "pkid"]
-
-# apps/properties/serializers.py (add at the bottom)
-
-from .models import PropertySearch
+        # CRITICAL FIX: This line prevents the "user field is required" error
+        read_only_fields = ["user", "slug", "ref_code", "views"]
 
 class PropertySearchSerializer(serializers.ModelSerializer):
     class Meta:

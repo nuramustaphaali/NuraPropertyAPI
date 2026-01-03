@@ -6,7 +6,10 @@ from django.shortcuts import get_object_or_404
 from .models import Transaction
 from .serializers import TransactionSerializer
 from apps.users.permissions import IsAgent # Import custom permission from Phase 4
+from drf_spectacular.utils import extend_schema
 
+
+@extend_schema(tags=['Finance'])
 class ReportPaymentView(APIView):
     """
     User submits a record of offline payment.
@@ -20,6 +23,7 @@ class ReportPaymentView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+@extend_schema(tags=['Finance'])
 class MyTransactionHistoryView(generics.ListAPIView):
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = TransactionSerializer
@@ -27,6 +31,7 @@ class MyTransactionHistoryView(generics.ListAPIView):
     def get_queryset(self):
         return Transaction.objects.filter(user=self.request.user)
 
+@extend_schema(tags=['Finance'])
 class VerifyPaymentView(APIView):
     """
     Only Agents/Admins can mark a transaction as VERIFIED.
@@ -58,6 +63,7 @@ from .models import Deal
 from .serializers import DealSerializer
 from apps.properties.models import Property
 
+@extend_schema(tags=['Finance'])
 class CreateDealView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
@@ -97,6 +103,7 @@ from django.db.models import Sum, Count
 from apps.properties.models import Property
 from apps.users.models import User
 
+@extend_schema(tags=['Analytics'])
 class KPIAnalyticsView(APIView):
     """
     Returns high-level stats for the Admin Dashboard.
@@ -118,6 +125,7 @@ class KPIAnalyticsView(APIView):
             "total_commissions_generated": total_commissions
         }, status=status.HTTP_200_OK)
 
+@extend_schema(tags=['Analytics'])
 class AgentPerformanceView(APIView):
     """
     Returns stats for the currently logged-in Agent.

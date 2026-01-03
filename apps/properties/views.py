@@ -7,13 +7,15 @@ from django_filters.rest_framework import DjangoFilterBackend
 from .models import Property
 from .serializers import PropertySerializer, PropertyCreateSerializer
 #from .exceptions import PropertyNotFound # Optional custom exception
+from drf_spectacular.utils import extend_schema
+
 
 class PropertyPagination(PageNumberPagination):
     page_size = 10
 
 # apps/properties/views.py
 from .filters import PropertyFilter # Import the new filter
-
+@extend_schema(tags=['Properties'])
 class PropertyListAPIView(generics.ListAPIView):
     serializer_class = PropertySerializer
     queryset = Property.objects.all().order_by("-created_at")
@@ -23,16 +25,17 @@ class PropertyListAPIView(generics.ListAPIView):
     search_fields = ["country", "city", "street_address", "title", "description"]
     ordering_fields = ["created_at", "price"]
 
-
+@extend_schema(tags=['Properties'])
 class PropertyCreateAPIView(generics.CreateAPIView):
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = PropertyCreateSerializer
 
     def perform_create(self, serializer):
-        user = self.request.user
-        serializer.save(user=user)
-        # In a real app, you might want to log this or send a notification
+       # user = self.request.user
+        serializer.save(user=self.request.user)
 
+        # In a real app, you might want to log this or send a notification
+@extend_schema(tags=['Properties'])
 class PropertyDetailView(APIView):
     def get(self, request, slug):
         try:
@@ -44,6 +47,7 @@ class PropertyDetailView(APIView):
         except Property.DoesNotExist:
             return Response({"error": "Property Not Found"}, status=status.HTTP_404_NOT_FOUND)
 
+@extend_schema(tags=['Properties'])
 class UpdatePropertyAPIView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
@@ -63,6 +67,7 @@ class UpdatePropertyAPIView(APIView):
         except Property.DoesNotExist:
             return Response({"error": "Property Not Found"}, status=status.HTTP_404_NOT_FOUND)
 
+@extend_schema(tags=['Properties'])
 class DeletePropertyAPIView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
@@ -83,6 +88,7 @@ class DeletePropertyAPIView(APIView):
 from rest_framework.parsers import MultiPartParser, FormParser
 from .serializers import PropertyImageSerializer
 
+@extend_schema(tags=['Media'])
 class UploadPropertyImageView(APIView):
     permission_classes = [permissions.IsAuthenticated]
     parser_classes = [MultiPartParser, FormParser] # Allows file uploads
@@ -113,6 +119,7 @@ class UploadPropertyImageView(APIView):
 from .models import PropertySearch
 from .serializers import PropertySearchSerializer
 
+@extend_schema(tags=['Properties'])
 class SavedSearchListCreateView(generics.ListCreateAPIView):
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = PropertySearchSerializer
@@ -123,6 +130,7 @@ class SavedSearchListCreateView(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
+@extend_schema(tags=['Properties'])
 class SavedSearchDeleteView(generics.DestroyAPIView):
     permission_classes = [permissions.IsAuthenticated]
     queryset = PropertySearch.objects.all()

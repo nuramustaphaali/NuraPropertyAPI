@@ -9,6 +9,7 @@ from django.contrib import admin
 from django.urls import path, include
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
 from apps.common.views import HomeAPIView # Import the view
+from drf_spectacular.utils import extend_schema
 
 urlpatterns = [
     path('admin/', admin.site.urls),
